@@ -1,0 +1,17 @@
+{
+    "debug": false,
+
+    "api_codeforces": "codeforces.com",
+
+    "ranks": [
+        "newbie", 
+        "pupil", 
+        "specialist", 
+        "expert", 
+        "candidate Mmaster", 
+        "master", 
+        "grandmaster", 
+        "international grandmaster", 
+        "legendary grandmaster"
+    ]
+}
