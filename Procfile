@@ -1,3 +1,3 @@
 heroku buildpacks:set heroku/nodejs
-worker: node index.js
+worker: npm start
 web: npm start
