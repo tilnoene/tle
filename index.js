@@ -11,18 +11,18 @@ const unknowCommand = require("./scripts/unknowCommand");
 const updateRank = require("./scripts/updateRank");
 const dailyReset = require("./scripts/dailyReset");
 
-// reset handle of all users everyday at 00:00 
-let timeDailyReset = new cron.CronJob('00 00 00 * * *', () => {
-    //console.log(client);
+// reset handle of all users everyday at 00:00 [second, minute, hour, day, month, day_of_week]
+const timeDailyReset = new cron.CronJob('00 00 00 * * *', () => {
+    console.log("Loading daily reset...");
+
+    const guild = client.guilds.cache.get(process.env.SERVER_ID);
+    dailyReset(guild);
 });
 
 timeDailyReset.start();
 
 client.on("ready", () => {
     console.log(`O BOT está online!`);
-
-    const guild = client.guilds.cache.get(process.env.SERVER_ID);
-    dailyReset(guild);
 });
 
 client.on("message", msg => {

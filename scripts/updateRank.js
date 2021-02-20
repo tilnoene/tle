@@ -16,27 +16,27 @@ module.exports = async ( guild, member ) => {
     // Codeforces rank
     await getCodeforcesData(handle)
         .then(response => {
+            rank = "NEWBIE";
+
             if (response.status === "OK") {
-                let rank = response.result[0].rank;
-                
-                if (rank) rank = rank.toUpperCase();
-                else rank = "NEWBIE";
-
-                const role = serverRoles.find((role) => {
-                    return role.name.toUpperCase() === rank
-                });
-
-                // Remove actual roles and add the new role
-                if(role) {
-                    member.roles._roles.map((currentRole) => {
-                        if (codeforces_ranks.includes(currentRole.name.toLowerCase()) && currentRole !== role) {
-                            member.roles.remove(currentRole);
-                        }
-                    });
-                    
-                    member.roles.add(role);
-                }
+                rank = response.result[0].rank.toUpperCase();
             }
+
+            const role = serverRoles.find((role) => {
+                return role.name.toUpperCase() === rank
+            });
+
+            // Remove actual roles and add the new role
+            if(role) {
+                member.roles._roles.map((currentRole) => {
+                    if (codeforces_ranks.includes(currentRole.name.toLowerCase()) && currentRole !== role) {
+                        member.roles.remove(currentRole);
+                    }
+                });
+                    
+                member.roles.add(role);
+            }
+            
         });
     
     // AtCoder rank
