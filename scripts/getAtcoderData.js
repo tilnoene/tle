@@ -4,7 +4,7 @@ const cheerio = require("cheerio");
 const config = require("../config.json");
 
 module.exports = async ( handle ) => {
-    let result = undefined;
+    let result = 0;
 
     await request.get(`http://${config.api_atcoder}/users/${handle}`)
         .then(response => cheerio.load(response))

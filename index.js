@@ -4,24 +4,25 @@ const client = new Discord.Client();
 require('dotenv').config();
 const webhookListener = require('./scripts/webhook_listener.js');
 
-const config = require("./config.json");
 const commands = require("./scripts/commandsReader")(process.env.PREFIX);
-const unknowCommand = require("./scripts/unknowCommand");
 const cron = require('cron');
 
+const unknowCommand = require("./scripts/unknowCommand");
+const updateRank = require("./scripts/updateRank");
+const dailyReset = require("./scripts/dailyReset");
+
 // reset handle of all users everyday at 00:00 
-let dailyReset = new cron.CronJob('00 00 00 * * *', () => {
+let timeDailyReset = new cron.CronJob('00 00 00 * * *', () => {
     //console.log(client);
 });
 
-dailyReset.start();
+timeDailyReset.start();
 
 client.on("ready", () => {
     console.log(`O BOT está online!`);
-    /*const list = client.guilds.cache.get("790333694216372265");
 
-    console.log(list.members);
-    list.members.cache.forEach(member => console.log(member.displayName)); */
+    const guild = client.guilds.cache.get(process.env.SERVER_ID);
+    dailyReset(guild);
 });
 
 client.on("message", msg => {
@@ -34,5 +35,9 @@ client.on("message", msg => {
     }
 
 })
+
+client.on("guildMemberUpdate", (oldMember, newMember) => {
+    updateRank(newMember.guild, newMember);
+});
 
 client.login(process.env.DISCORD_TOKEN);
