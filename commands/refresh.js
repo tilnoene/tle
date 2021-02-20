@@ -1,5 +1,4 @@
 const config = require("../config.json");
-const user_codeforces = require("../scripts/user_codeforces");
 
 module.exports = async ( client, msg ) => {
     const ranks = config.ranks;

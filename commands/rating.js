@@ -1,42 +1,42 @@
-const request = require("request-promise");
-const cheerio = require("cheerio");
-
 const config = require("../config.json");
 
-//const rating_codeforces = require("../scripts/rating_codeforces");
+const getCodeforcesData = require("../scripts/getCodeforcesData");
+const getAtcoderData = require("../scripts/getAtcoderData");
 const getAtcoderRankName = require("../scripts/getAtcoderRankName");
 
 module.exports = async ( client, msg ) => {
     const handle = msg.content.split(" ")[1];
-    let message = `user: ${handle}`;
+    let message = "";
 
     // Codeforces rating
-    await request.get(`http://${config.api_codeforces}/api/user.info?handles=${handle}`)
-        .then(response => JSON.parse(response))
+    await getCodeforcesData(handle)
         .then(data => {
             if (config.debug) console.log(data);
 
             if (data.status === "OK") {
                 const codeforces_data = data.result[0];
                 const codeforces_name = "`[Codeforces]`";
-                message += `\n${codeforces_name} ${codeforces_data.rating} (${codeforces_data.rank})`;
+
+                if (codeforces_data.rating) {
+                    message += `\n${codeforces_name} ${codeforces_data.rating} (${codeforces_data.rank})`;
+                } else {
+                    message += `\n${codeforces_name} unrated`;
+                }
             }
         })
         .catch(error => console.log(`[Codeforces] O usuário ${handle} não existe.`));
-
+    
     // AtCoder rating
-    await request.get(`http://${config.api_atcoder}/users/${handle}`)
-        .then(response => cheerio.load(response))
-        .then($ => {
-            if (config.debug) console.log($);
+    await getAtcoderData(handle)
+        .then(atcoder_rating => {
+            const atcoder_name = "`[AtCoder]`";
 
-            $('#main-container > div.row > div.col-md-9.col-sm-12 > table > tbody > tr:nth-child(2)').each((index, element) => {
-                const atcoder_rating = parseInt($(element).text().slice(6));
-                const atcoder_name = "`[AtCoder]`";
+            if (atcoder_rating)
                 message += `\n${atcoder_name} ${atcoder_rating} (${getAtcoderRankName(atcoder_rating)})`;
-            });
-        })
-        .catch(error => console.log(`[AtCoder] O usuário ${handle} não existe.`));
-
-    msg.channel.send(message);
+        });
+    
+    if (message.length === 0)
+        message = "\nNenhum dado foi encontrado para esse usuário.";
+    
+    msg.channel.send(`user: ${handle}` + message);
 }
