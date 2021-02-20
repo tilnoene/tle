@@ -4,7 +4,7 @@
     "api_codeforces": "codeforces.com",
     "api_atcoder": "atcoder.jp",
 
-    "ranks": [
+    "codeforces_ranks": [
         "newbie", 
         "pupil", 
         "specialist", 
