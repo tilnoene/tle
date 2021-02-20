@@ -1,1 +1,2 @@
-web: yarn start
+heroku buildpacks:set heroku/nodejs
+web: npm start

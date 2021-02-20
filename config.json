@@ -2,6 +2,7 @@
     "debug": false,
 
     "api_codeforces": "codeforces.com",
+    "api_atcoder": "atcoder.jp",
 
     "ranks": [
         "newbie", 
@@ -13,5 +14,16 @@
         "grandmaster", 
         "international grandmaster", 
         "legendary grandmaster"
+    ],
+
+    "atcoder_ranks": [
+        "gray",
+        "brown",
+        "green",
+        "cyan",
+        "blue",
+        "yellow",
+        "orange",
+        "red"
     ]
 }
