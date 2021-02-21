@@ -11,13 +11,13 @@ const unknowCommand = require("./scripts/unknowCommand");
 const updateRank = require("./scripts/updateRank");
 const dailyReset = require("./scripts/dailyReset");
 
-// reset handle of all users everyday at 00:00 [second, minute, hour, day, month, day_of_week] '00 00 00 * * *'
-// every 10 minutes
-const timeDailyReset = new cron.CronJob('*/10 * * * *', () => {
+// reset handle of all users [second, minute, hour, day, month, day_of_week] eg. 0AM = '00 00 00 * * *'
+// every 1 hour
+const timeDailyReset = new cron.CronJob('*/1 * * *', () => {
     console.log("Loading daily reset...");
 
-    //const guild = client.guilds.cache.get(process.env.SERVER_ID);
-    //dailyReset(guild);
+    const guild = client.guilds.cache.get(process.env.SERVER_ID);
+    dailyReset(guild);
 });
 
 timeDailyReset.start();

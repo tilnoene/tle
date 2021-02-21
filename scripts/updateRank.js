@@ -53,7 +53,7 @@ module.exports = async ( guild, member ) => {
                     if (atcoder_ranks.includes(currentRole.name.toLowerCase()) && currentRole !== role) {
                         member.roles.remove(currentRole);
                     }
-                })
+                });
                 
                 member.roles.add(role);
             }
