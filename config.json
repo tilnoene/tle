@@ -1,10 +1,9 @@
 {
-    "debug": false,
-
     "api_codeforces": "codeforces.com",
     "api_atcoder": "atcoder.jp",
 
     "codeforces_ranks": [
+        "unrated",
         "newbie", 
         "pupil", 
         "specialist", 

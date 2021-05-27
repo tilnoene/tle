@@ -1,44 +1,48 @@
-const config = require("../config.json");
+const config = require('../config.json');
 
-const getCodeforcesData = require("../scripts/getCodeforcesData");
-const getAtcoderData = require("../scripts/getAtcoderData");
-const getAtcoderRankName = require("../scripts/getAtcoderRankName");
+const getCodeforcesData = require('./getCodeforcesData');
+const getAtcoderData = require('./getAtcoderData');
+const getAtcoderRankName = require('./getAtcoderRankName');
 
-module.exports = async ( guild, member ) => {
+module.exports = async ( guild, user ) => {
     const codeforces_ranks = config.codeforces_ranks;
     const atcoder_ranks = config.atcoder_ranks;
-
+    
     const serverRoles = guild.roles.cache;
+    const userRoles = user.roles.cache || user._roles;
 
-    const nickname = member.nickname;
-    const handle = nickname ? nickname : member.user.username;
+    const nickname = user.nickname;
+    const handle = nickname ? nickname : user.user.username;
 
     // Codeforces rank
     await getCodeforcesData(handle)
-        .then(response => {
-            rank = "NEWBIE";
+        .then(data => data.rank)
+        .then(rank => {
+            // search role with same name in server
+            const role = serverRoles.find(currentRole => (
+                currentRole.name.toLowerCase() === rank
+            ));
 
-            if (response.status === "OK") {
-                rank = response.result[0].rank.toUpperCase();
-            }
-
-            const role = serverRoles.find((role) => {
-                return role.name.toUpperCase() === rank
-            });
-
-            // Remove actual roles and add the new role
-            if(role) {
-                member.roles._roles.map((currentRole) => {
-                    if (codeforces_ranks.includes(currentRole.name.toLowerCase()) && currentRole !== role) {
-                        member.roles.remove(currentRole);
-                    }
-                });
+            if (role) {
+                // verify if user already have this rule
+                const alreadyHaveRole = userRoles.find(currentRole => (
+                    currentRole.name.toLowerCase() === rank
+                ));
+                
+                if (!alreadyHaveRole) {
+                    // remove the old role
+                    user.roles._roles.map(currentRole => {
+                        if (codeforces_ranks.includes(currentRole.name.toLowerCase()) && currentRole !== role) {
+                            user.roles.remove(currentRole);
+                        }
+                    });
                     
-                member.roles.add(role);
+                    user.roles.add(role).catch(error => console.error(`[ADD ROLE] ${error}`));
+                }
             }
-            
-        });
-    
+        })
+        .catch(error => console.error(`[GET CF RANK] ${error}`));
+
     // AtCoder rank
     await getAtcoderData(handle)
         .then(rating => getAtcoderRankName(rating).toUpperCase())
@@ -47,15 +51,15 @@ module.exports = async ( guild, member ) => {
                 return role.name.toUpperCase() === rank
             });
 
-            // Remove actual roles and add the new role
+            // remove current roles and add the new role
             if(role) {
-                member.roles._roles.map((currentRole) => {
+                user.roles._roles.map((currentRole) => {
                     if (atcoder_ranks.includes(currentRole.name.toLowerCase()) && currentRole !== role) {
-                        member.roles.remove(currentRole);
+                        user.roles.remove(currentRole);
                     }
                 });
                 
-                member.roles.add(role);
+                user.roles.add(role);
             }
         });
 }

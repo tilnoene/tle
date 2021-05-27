@@ -1,13 +1,23 @@
-const request = require("request-promise");
+const axios = require('axios');
 
-const config = require("../config.json");
+const config = require('../config.json');
 
 module.exports = async ( handle ) => {
-    let result = { status: "FAILED" };
+    let dataResult = {
+        rank: 'unrated',
+        rating: 'unrated'
+    };
 
-    await request.get(`http://${config.api_codeforces}/api/user.info?handles=${handle}`)
-        .then(response => result = JSON.parse(response))
-        .catch(error => console.log(`[Codeforces] O usuário ${handle} não existe.`));
+    await axios.get(`http://${config.api_codeforces}/api/user.info?handles=${handle}`)
+        .then(response => response.data)
+        .then(data => data.result[0])
+        .then(result => {
+            dataResult.rank = result.rank || 'unrated',
+            dataResult.rating = result.rating || 'unrated'
+        })
+        .catch(error => {
+            console.log(`[Codeforces] User with handle ${handle} not found`)
+        });
     
-    return result;
+    return dataResult;
 }

@@ -1,6 +1,6 @@
-const config = require("../config.json");
+const config = require('../config.json');
 
-const updateRank = require("../scripts/updateRank");
+const updateRank = require('../scripts/updateRank');
 
 module.exports = async ( client, msg ) => {
     updateRank(msg.guild, msg.member);
