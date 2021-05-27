@@ -30,8 +30,10 @@ Para atualização automática dos cargos de acordo com o ranking é necessário
  - não atualiza o cargo caso o usuário permaneça com o ranking anterior
  - substitui a biblioteca `request-express`, já obsoleta, pelo `axios`
  - intervalo de 500ms para as requisições do Codeforces
+ - atualiza cargos ao entrar no servidor
 
 ### v1.0
  - atualização automática dos cargos de acordo com o ranking a cada minuto
  - integração com o site Codeforces e AtCoder
  - comando para informar o rating do usuário
+ - atualiza cargos ao mudar o nickname
