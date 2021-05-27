@@ -1,2 +1,2 @@
 # TLE
-A Discord bot to check status on Competitive Programming sites.
+A Discord BOT to check status on Competitive Programming sites.
