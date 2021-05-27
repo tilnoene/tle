@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 require('dotenv').config();
-const webhookListener = require('./scripts/webhook_listener.js');
+const webhookListener = require('./scripts/webhook_listener');
 
 const commands = require('./scripts/commandsReader')(process.env.PREFIX);
 const cron = require('cron');
