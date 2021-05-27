@@ -41,4 +41,8 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
     updateRank(newMember.guild, newMember);
 });
 
+client.on('guildMemberAdd', member => {
+    updateRank(member.guild, member);
+});
+
 client.login(process.env.DISCORD_TOKEN);
