@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 require('dotenv').config();
+const webhookListener = require('./scripts/webhook_listener.js');
 
 const commands = require('./scripts/commandsReader')(process.env.PREFIX);
 const cron = require('cron');
@@ -19,11 +20,10 @@ const timeDailyReset = new cron.CronJob('* * */1 * *', () => {
     dailyReset(guild);
 });
 
+timeDailyReset.start();
+
 client.on('ready', () => {
     console.log('BOT is online!');
-
-    const guild = client.guilds.cache.get(process.env.SERVER_ID);
-    dailyReset(guild);
 });
 
 client.on('message', msg => {
