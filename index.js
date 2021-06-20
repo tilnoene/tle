@@ -32,6 +32,7 @@ client.on('message', msg => {
         const args = msg.content.split(' ');
         
         if (commands[args[0]]) commands[args[0]](client, msg);
+        else if(Number.isInteger(parseInt(args[0]))) return;
         else if(args[0].split('')[0] == process.env.PREFIX) unknowCommand(client, msg);
     }
 

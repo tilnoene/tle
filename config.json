@@ -1,6 +1,8 @@
 {
     "api_codeforces": "codeforces.com",
     "api_atcoder": "atcoder.jp",
+    "api_predictor": "cf-predictor.herokuapp.com",
+    "api_upcoming_contests": "kontests.net/api/v1",
 
     "codeforces_ranks": [
         "unrated",

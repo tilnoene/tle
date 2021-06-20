@@ -1,5 +1,3 @@
-const config = require('../config.json');
-
 const getCodeforcesRank = require('../scripts/getCodeforcesData');
 const getAtcoderData = require('../scripts/getAtcoderData');
 const getAtcoderRankName = require('../scripts/getAtcoderRankName');
