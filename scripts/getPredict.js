@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const config = require('../config.json');
+const startedContest = require('./startedContest');
 
 module.exports = async ( handle ) => {
     let dataResult = {
@@ -19,14 +20,17 @@ module.exports = async ( handle ) => {
                 contest_id = url[url.length-1];
             }
         }))
-        .catch(error => console.log('[KONTESTS] An error occurred'));
+        .catch(() => console.log('[KONTESTS] An error occurred'));
 
     if (!contest_id) {
         console.log(`[Upcoming Contest] No contest found`);
         return;
     }
     
-    // ir decrementando contest_id caso não funcione e request pra API CF
+    // contest_id = last contest (or first upcoming contest)
+    while (!await startedContest(contest_id))
+        contest_id -= 1;
+
     await axios.get(`https://${config.api_predictor}/GetPartialRatingChangesServlet?contestId=${contest_id}&handles=${handle}`)
         .then(response => response.data)
         .then(data => data.result[0])
@@ -36,7 +40,7 @@ module.exports = async ( handle ) => {
             dataResult.newRating = result.newRating,
             dataResult.rank = result.rank
         })
-        .catch(error => {
+        .catch(() => {
             console.log(`[Predictor] An error occurred while processing the handle ${handle}`)
         })
 
