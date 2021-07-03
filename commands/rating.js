@@ -41,6 +41,8 @@ module.exports = async ( client, msg ) => {
 
             if (atcoder_rating)
                 message += `\n${atcoder_name} ${atcoder_rating} (${getAtcoderRankName(atcoder_rating)})`;
+            else
+                message += `\n${atcoder_name} unrated (unrated)`;
         })
         .catch(error => console.log(`[AtCoder] O usuário ${handle} não existe.`));
 
