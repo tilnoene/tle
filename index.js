@@ -34,11 +34,11 @@ client.on('message', message => {
     const args = message.content.split(' ');
     
     if (commands[args[0]])
-    commands[args[0]](client, message);
+      commands[args[0]](client, message);
     else if (Number.isInteger(parseInt(args[0]))) // é um número negativo (ex: -1), então não interpretar como comando desconhecido
-    return;
+      return;
     else if (args[0].split('')[0] == process.env.PREFIX)
-    unknowCommand(client, message);
+      unknowCommand(message);
   }
 });
 

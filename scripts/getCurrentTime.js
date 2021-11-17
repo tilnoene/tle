@@ -8,5 +8,5 @@ module.exports = () => {
   minutes = now.getMinutes();
   sseconds = now.getSeconds();
 
-  return `[${day.padStart(2, '0')}/${month} - ${hours}:${minutes}:${seconds}]`;
+  return `[${day}/${month} - ${hours}:${minutes}:${seconds}]`;
 }
