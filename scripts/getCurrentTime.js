@@ -6,7 +6,7 @@ module.exports = () => {
 
   hours = now.getHours();
   minutes = now.getMinutes();
-  sseconds = now.getSeconds();
+  seconds = now.getSeconds();
 
   return `[${day}/${month} - ${hours}:${minutes}:${seconds}]`;
 }
