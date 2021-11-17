@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Discord.Client({ partials: ['MESSAGE'] });
 
 const cron = require('cron');
 
@@ -13,8 +13,8 @@ const resetAllHandles = require('./scripts/resetAllHandles');
 const updateRank = require('./scripts/updateRank');
 
 // [second, minute, hour, day, month, day_of_week] eg. 0AM = '00 00 00 * * *'
-// reset handle of all users every 1 hour
-const timeDailyReset = new cron.CronJob('* */1 * * *', () => {
+// reset handle and university of all users every 1 hour
+const resetAllUsers = new cron.CronJob('* */1 * * *', () => {
   console.log(`${getCurrentTime()} Resetting all handles...`);
   
   const guild = client.guilds.cache.get(process.env.SERVER_ID);
@@ -22,7 +22,7 @@ const timeDailyReset = new cron.CronJob('* */1 * * *', () => {
   resetAllHandles(guild);
 });
 
-timeDailyReset.start();
+resetAllUsers.start();
 
 client.on('ready', () => {
   console.log('BOT is online!');
@@ -48,6 +48,10 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 
 client.on('guildMemberAdd', member => {
   updateRank(member.guild, member);
+});
+
+client.on('messageReactionAdd', (reaction, user) => {
+  console.log('oi');
 });
 
 client.login(process.env.DISCORD_TOKEN);
