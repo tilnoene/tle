@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
+const getAtcoderRank = require('./utils/getAtcoderRank');
 
 require('./deploy-commands');
 require('dotenv').config();
@@ -16,6 +17,7 @@ for (const file of commandFiles) {
 
 client.once('ready', () => {
 	console.log('Ready!');
+	console.log(getAtcoderRank('tilnoene'));
 });
 
 client.on('interactionCreate', async interaction => {
