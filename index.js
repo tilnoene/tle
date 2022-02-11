@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
+
 const updateRank = require('./utils/updateRank');
 
 require('./deploy-commands');
@@ -48,5 +49,13 @@ client.on('messageCreate', async message => {
 		// message.reply('Nathália Chata');
 	}
 })
+
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+  updateRank(newMember.guild, newMember);
+});
+
+client.on('guildMemberAdd', member => {
+  updateRank(member.guild, member);
+});
 
 client.login(process.env.DISCORD_TOKEN);
