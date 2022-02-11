@@ -3,13 +3,11 @@ const updateRank = require('../utils/updateRank');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('user-info')
+		.setName('refresh')
 		.setDescription('Display info about yourself.'),
 	async execute(interaction) {
-		// updateRank(interaction.guild, interaction.member);
-
-		interaction.deferReply();
-
-		interaction.editReply({ content: "replied" });
+		await interaction.deferReply();
+    await updateRank(interaction.guild, interaction.member);
+		await interaction.editReply('Seu ranking foi atualizado com sucesso!');
 	},
 };
