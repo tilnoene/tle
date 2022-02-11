@@ -1,4 +1,30 @@
 {
 	"clientId": "847222398062690335",
-	"guildId": "863158346902929418"
+	"guildId": "863158346902929418",
+  "api_codeforces": "codeforces.com",
+  "api_atcoder": "atcoder.jp",
+
+  "codeforces_ranks": [
+    "unrated",
+    "newbie", 
+    "pupil", 
+    "specialist", 
+    "expert", 
+    "candidate master", 
+    "master", 
+    "grandmaster", 
+    "international grandmaster", 
+    "legendary grandmaster"
+  ],
+
+  "atcoder_ranks": [
+    "gray",
+    "brown",
+    "green",
+    "cyan",
+    "blue",
+    "yellow",
+    "orange",
+    "red"
+  ]
 }
