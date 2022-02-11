@@ -27,5 +27,18 @@
     "yellow",
     "orange",
     "red"
-  ]
+  ],
+
+  "colors": {
+    "unrated": "#8c8c8c",
+    "newbie": "#8c8c8c", 
+    "pupil": "#00c700", 
+    "specialist": "#01bdb2", 
+    "expert": "#757dff", 
+    "candidate master": "#ce8aff", 
+    "master": "#FDFD96", 
+    "grandmaster": "#FF6961", 
+    "international grandmaster": "#FF6961", 
+    "legendary grandmaster": "#FF6961"
+  }
 }

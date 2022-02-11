@@ -4,7 +4,7 @@ const updateRank = require('../utils/updateRank');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('refresh')
-		.setDescription('Display info about yourself.'),
+		.setDescription('Atualiza seu cargo de acordo com o ranking.'),
 	async execute(interaction) {
 		await interaction.deferReply();
     await updateRank(interaction.guild, interaction.member);
