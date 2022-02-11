@@ -1,7 +1,10 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
+const { CronJob } = require('cron');
 
 const updateRank = require('./utils/updateRank');
+const resetAllUsersRank = require('./utils/resetAllUsersRank');
+const getCurrentTime = require('./utils/getCurrentTime');
 
 require('./deploy-commands');
 require('dotenv').config();
@@ -16,6 +19,7 @@ const client = new Client({ intents: [
 	Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
 ] });
 
+// adiciona os comandos
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -23,6 +27,17 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
+
+// reinicia o handle de todos os usuários a cada 1 hora
+const resetAllUsers = new CronJob('25 * * * *', () => {
+  console.log(`${getCurrentTime()} Resetting all handles...`);
+  
+  const guild = client.guilds.cache.get(process.env.SERVER_ID);
+
+  resetAllUsersRank(guild);
+});
+
+resetAllUsers.start();
 
 client.once('ready', () => {
 	console.log('Ready!');

@@ -13,7 +13,7 @@ module.exports = async ( guild, member ) => {
   
   const memberCodeforcesRank = await getCodeforcesRank(handles.codeforces);
   const memberAtcoderRank = await getAtcoderRank(handles.atcoder);
-  
+
   codeforces_ranks.forEach(rank => {
     // remove a handle
     if (member.roles.cache.some(role => role.name.toLowerCase() === rank) && rank !== memberCodeforcesRank.rank) {
