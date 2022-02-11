@@ -2,6 +2,7 @@
   "api_codeforces": "codeforces.com",
   "api_atcoder": "atcoder.jp",
   "api_upcoming_contests": "kontests.net/api/v1",
+  "api_predictor": "cf-predictor.herokuapp.com",
 
   "codeforces_ranks": [
     "unrated",

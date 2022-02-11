@@ -38,32 +38,13 @@ const resetAllUsers = new CronJob('0 * * * *', () => {
   const guild = client.guilds.cache.get(process.env.SERVER_ID);
 
   resetAllUsersRank(guild);
-	// scheduleContestEvents(guild);
+	scheduleContestEvents(guild);
 });
 
 resetAllUsers.start();
 
 client.once('ready', () => {
 	console.log('Ready!');
-
-	const guild = client.guilds.cache.get(process.env.SERVER_ID);
-
-	scheduleContestEvents(guild);
-
-	return;
-	// const guild = client.guilds.cache.get(process.env.SERVER_ID);
-
-	guild.scheduledEvents.create({
-		name: 'Codeforces Round',
-		scheduledStartTime: moment().add(5, 'minutes'),
-		scheduledEndTime: moment().add(2, 'hours'),
-		privacyLevel: 2,
-		entityType: 'EXTERNAL',
-		description: 'teste de descrição',
-		entityMetadata: { location: 'codeforces.com' },
-	});
-
-	console.log(guild.scheduledEvents.cache);
 });
 
 client.on('interactionCreate', async interaction => {
