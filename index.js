@@ -1,9 +1,11 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { CronJob } = require('cron');
+const moment = require('moment');
 
 const updateRank = require('./utils/updateRank');
 const resetAllUsersRank = require('./utils/resetAllUsersRank');
+const scheduleContestEvents = require('./utils/scheduleContestEvents');
 const getCurrentTime = require('./utils/getCurrentTime');
 
 require('./deploy-commands');
@@ -29,18 +31,39 @@ for (const file of commandFiles) {
 }
 
 // reinicia o handle de todos os usuários a cada 1 hora
-const resetAllUsers = new CronJob('25 * * * *', () => {
+// também verifica se há contests para adicionar aos eventos
+const resetAllUsers = new CronJob('0 * * * *', () => {
   console.log(`${getCurrentTime()} Resetting all handles...`);
   
   const guild = client.guilds.cache.get(process.env.SERVER_ID);
 
   resetAllUsersRank(guild);
+	// scheduleContestEvents(guild);
 });
 
 resetAllUsers.start();
 
 client.once('ready', () => {
 	console.log('Ready!');
+
+	const guild = client.guilds.cache.get(process.env.SERVER_ID);
+
+	scheduleContestEvents(guild);
+
+	return;
+	// const guild = client.guilds.cache.get(process.env.SERVER_ID);
+
+	guild.scheduledEvents.create({
+		name: 'Codeforces Round',
+		scheduledStartTime: moment().add(5, 'minutes'),
+		scheduledEndTime: moment().add(2, 'hours'),
+		privacyLevel: 2,
+		entityType: 'EXTERNAL',
+		description: 'teste de descrição',
+		entityMetadata: { location: 'codeforces.com' },
+	});
+
+	console.log(guild.scheduledEvents.cache);
 });
 
 client.on('interactionCreate', async interaction => {

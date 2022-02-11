@@ -3,6 +3,7 @@
 	"guildId": "863158346902929418",
   "api_codeforces": "codeforces.com",
   "api_atcoder": "atcoder.jp",
+  "api_upcoming_contests": "kontests.net/api/v1",
 
   "codeforces_ranks": [
     "unrated",

@@ -1,0 +1,51 @@
+const sleep = require('./sleep');
+const axios = require('axios');
+
+const config = require('../config.json');
+
+module.exports = async ( guild ) => {
+  // codeforces
+  await axios.get(`http://${config.api_upcoming_contests}/codeforces`)
+    .then(response => {
+      for (const contest of response.data) {
+        // verifica se já existe um evento agendado com esse nome
+        const serverScheduledEvents = guild.scheduledEvents.cache;
+
+        if (!serverScheduledEvents.some(scheduledEvent => scheduledEvent.name === contest.name)) {
+          guild.scheduledEvents.create({
+            name: contest.name,
+            scheduledStartTime: contest.start_time,
+            scheduledEndTime: contest.end_time,
+            privacyLevel: 2,
+            entityType: 'EXTERNAL',
+            // description: 'Codeforces',
+            entityMetadata: { location: contest.url },
+          });
+        }
+      }
+    })
+
+  // atcoder
+  await axios.get(`http://${config.api_upcoming_contests}/at_coder`)
+  .then(response => {
+    for (const contest of response.data) {
+      // adicionar somente os AtCoder Beginner Contest
+      if (!contest.name.includes('Beginner')) continue;
+
+      // verifica se já existe um evento agendado com esse nome
+      const serverScheduledEvents = guild.scheduledEvents.cache;
+
+      if (!serverScheduledEvents.some(scheduledEvent => scheduledEvent.name === contest.name)) {
+        guild.scheduledEvents.create({
+          name: contest.name,
+          scheduledStartTime: contest.start_time,
+          scheduledEndTime: contest.end_time,
+          privacyLevel: 2,
+          entityType: 'EXTERNAL',
+          // description: 'AtCoder',
+          entityMetadata: { location: contest.url },
+        });
+      }
+    }
+  })
+}

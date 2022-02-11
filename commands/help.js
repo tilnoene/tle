@@ -15,7 +15,7 @@ module.exports = {
 			commands.push({ name: `/${command.data.name}`, value: command.data.description });
 		}
 
-		const exampleEmbed = new MessageEmbed()
+		const helpMessage = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('TLE')
 			.setURL('https://github.com/tilnoene')
@@ -26,6 +26,6 @@ module.exports = {
 			.setTimestamp()
 			.setFooter({ text: 'BFS > DFS' });
 
-		return interaction.reply({ embeds: [exampleEmbed] });
+		return interaction.reply({ embeds: [helpMessage] });
 	},
 };
