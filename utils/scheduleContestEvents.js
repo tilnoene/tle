@@ -8,6 +8,9 @@ module.exports = async ( guild ) => {
   await axios.get(`http://${config.api_upcoming_contests}/codeforces`)
     .then(response => {
       for (const contest of response.data) {
+        // não adiciona Kotlin Heroes
+        if (contest.name.includes('Kotlin')) continue;
+
         // verifica se já existe um evento agendado com esse nome
         const serverScheduledEvents = guild.scheduledEvents.cache;
 
