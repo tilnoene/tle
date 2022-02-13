@@ -13,7 +13,7 @@ module.exports = {
         new MessageButton()
 					.setLabel('Grupo de Estudos')
 					.setStyle('LINK')
-					.setEmoji(process.env.BALLOON_WHITE_EMOJI_ID)
+					// .setEmoji(process.env.BALLOON_WHITE_EMOJI_ID)
           .setURL('https://unb-cic.github.io/Maratona-Extensao/'),
         new MessageButton()
 					.setLabel('UnBalloon')
