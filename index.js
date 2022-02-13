@@ -1,12 +1,12 @@
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { CronJob } = require('cron');
-const moment = require('moment');
 
 const updateRank = require('./utils/updateRank');
 const resetAllUsersRank = require('./utils/resetAllUsersRank');
 const scheduleContestEvents = require('./utils/scheduleContestEvents');
 const getCurrentTime = require('./utils/getCurrentTime');
+const sleep = require('./utils/sleep');
 
 require('./deploy-commands');
 require('dotenv').config();
@@ -61,6 +61,17 @@ client.on('interactionCreate', async interaction => {
 	} catch (error) {
 		console.error(error);
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
+});
+
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isSelectMenu()) return;
+
+	if (interaction.customId === 'select') {
+		await interaction.deferUpdate();
+		await sleep(4000);
+		await interaction.editReply({ content: 'Something was selected!', components: [] });
+		console.log(interaction);
 	}
 });
 

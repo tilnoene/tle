@@ -5,7 +5,7 @@ const fs = require('fs');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
-		.setDescription('Comandos e informações sobre o Bot.'),
+		.setDescription('Comandos e informações sobre o bot.'),
 	async execute(interaction) {
 		const commands = [];
 		const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
