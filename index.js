@@ -11,6 +11,8 @@ const getCurrentTime = require('./utils/getCurrentTime');
 require('./deploy-commands');
 require('dotenv').config();
 
+const keepAlive = require('./server');
+
 const client = new Client({ intents: [
 	Intents.FLAGS.GUILDS, 
 	Intents.FLAGS.GUILD_MEMBERS,
@@ -62,13 +64,6 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.on('messageCreate', async message => {
-	if (!message.author.bot && message.guild) {
-		// updateRank(message.guild, message.member);
-		// message.reply('Nathália Chata');
-	}
-})
-
 client.on('guildMemberUpdate', (oldMember, newMember) => {
   updateRank(newMember.guild, newMember);
 });
@@ -78,3 +73,5 @@ client.on('guildMemberAdd', member => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
+
+keepAlive();

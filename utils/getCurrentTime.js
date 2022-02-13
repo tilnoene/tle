@@ -1,12 +1,5 @@
+const moment = require('moment');
+
 module.exports = () => {
-  now = new Date();
-
-  day = now.getDay();
-  month = now.getMonth();
-
-  hours = now.getHours();
-  minutes = now.getMinutes();
-  seconds = now.getSeconds();
-
-  return `[${day}/${month} - ${hours}:${minutes}:${seconds}]`;
+  return `[${moment().subtract(3, 'hours').format('DD/MM/YYYY HH:mm:ss')}]`;
 }
