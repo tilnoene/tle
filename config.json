@@ -5,7 +5,7 @@
   "api_predictor": "cf-predictor.herokuapp.com",
 
   "codeforces_ranks": [
-    "unrated",
+    "unrated-cf",
     "newbie", 
     "pupil", 
     "specialist", 
@@ -18,7 +18,7 @@
   ],
 
   "atcoder_ranks": [
-    "unrated",
+    "unrated-ac",
     "gray",
     "brown",
     "green",
@@ -30,13 +30,14 @@
   ],
 
   "colors": {
-    "unrated": "#8c8c8c",
-    "newbie": "#8c8c8c", 
+    "unrated": "#696969",
+    "unrated-cf": "#696969",
+    "newbie": "#808080", 
     "pupil": "#00c700", 
     "specialist": "#01bdb2", 
-    "expert": "#757dff", 
-    "candidate master": "#ce8aff", 
-    "master": "#FDFD96", 
+    "expert": "#404bff", 
+    "candidate master": "#b34aff", 
+    "master": "#ffff24", 
     "grandmaster": "#FF6961", 
     "international grandmaster": "#FF6961", 
     "legendary grandmaster": "#FF6961"
