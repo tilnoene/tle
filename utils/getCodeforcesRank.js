@@ -5,7 +5,7 @@ const config = require('../config.json');
 module.exports = async ( handle ) => {
   let dataResult = {
     rating: 0,
-    rank: 'unrated'
+    rank: 'unrated-cf'
   };
 
   await axios.get(`http://${config.api_codeforces}/api/user.info?handles=${handle}`)
@@ -13,7 +13,7 @@ module.exports = async ( handle ) => {
     .then(data => data.result[0])
     .then(result => {
       dataResult.rating = result.rating || 0;
-      dataResult.rank = result.rank || 'unrated';
+      dataResult.rank = result.rank || 'unrated-cf';
     })
     .catch(() => {
       // console.log(`[Codeforces] User with handle ${handle} not found.`)

@@ -71,7 +71,7 @@ client.on('interactionCreate', async interaction => {
 		await interaction.deferUpdate();
 		await sleep(4000);
 		await interaction.editReply({ content: 'Something was selected!', components: [] });
-		console.log(interaction);
+		// console.log(interaction);
 	}
 });
 

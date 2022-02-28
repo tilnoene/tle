@@ -11,7 +11,7 @@ module.exports = async ( handle ) => {
   await axios.get(`http://${config.api_atcoder}/users/${handle}`)
     .then(response => cheerio.load(response.data))
     .then($ => {
-      $("#main-container > div.row > div.col-md-9.col-sm-12 > table > tbody > tr:nth-child(2)").each((index, element) => {
+      $('#main-container > div.row > div.col-md-9.col-sm-12 > table > tbody > tr:nth-child(2)').each((index, element) => {
         rating = parseInt($(element).text().slice(6));
       });
     })

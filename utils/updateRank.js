@@ -10,7 +10,7 @@ module.exports = async ( guild, member ) => {
 
   const serverRoles = guild.roles.cache;
   const handles = getHandles(member.nickname || member.user.username);
-  
+
   const memberCodeforcesRank = await getCodeforcesRank(handles.codeforces);
   const memberAtcoderRank = await getAtcoderRank(handles.atcoder);
 
