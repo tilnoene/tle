@@ -5,6 +5,7 @@ const { CronJob } = require('cron');
 const updateRank = require('./utils/updateRank');
 const resetAllUsersRank = require('./utils/resetAllUsersRank');
 const scheduleContestEvents = require('./utils/scheduleContestEvents');
+const scheduleEventMessage = require('./utils/scheduleEventMessage');
 const getCurrentTime = require('./utils/getCurrentTime');
 const sleep = require('./utils/sleep');
 
@@ -15,12 +16,12 @@ const keepAlive = require('./server');
 
 const client = new Client({ intents: [
 	Intents.FLAGS.GUILDS, 
-	Intents.FLAGS.GUILD_MEMBERS,
-	Intents.FLAGS.GUILD_PRESENCES,
+	Intents.FLAGS.GUILD_MEMBERS, 
+	Intents.FLAGS.GUILD_PRESENCES, 
 	Intents.FLAGS.GUILD_MESSAGES, 
 	Intents.FLAGS.GUILD_MESSAGE_REACTIONS, 
-	Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-	Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
+	Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS, 
+	Intents.FLAGS.GUILD_SCHEDULED_EVENTS, 
 ] });
 
 // adiciona os comandos
@@ -71,7 +72,6 @@ client.on('interactionCreate', async interaction => {
 		await interaction.deferUpdate();
 		await sleep(4000);
 		await interaction.editReply({ content: 'Something was selected!', components: [] });
-		// console.log(interaction);
 	}
 });
 
@@ -81,6 +81,21 @@ client.on('guildMemberUpdate', (oldMember, newMember) => {
 
 client.on('guildMemberAdd', member => {
   updateRank(member.guild, member);
+});
+
+client.on('messageCreate', async message => {
+	if (message.channelId === process.env.CONTEST_CHANNEL_ID) {
+		try {
+			const guild = client.guilds.cache.get(process.env.SERVER_ID);
+
+			scheduleEventMessage(guild, message);
+			message.react('✅');
+		} catch (error) {
+			console.error(error);
+
+			message.react('❌');
+		}
+	}
 });
 
 client.login(process.env.DISCORD_TOKEN);
