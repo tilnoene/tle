@@ -47,7 +47,7 @@ const resetAllUsers = new CronJob('0 * * * *', () => {
 resetAllUsers.start();
 
 client.once('ready', () => {
-	console.log('Ready!');
+	console.log(`${getCurrentTime()} Bot is ready!`);
 });
 
 client.on('interactionCreate', async interaction => {

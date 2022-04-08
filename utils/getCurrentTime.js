@@ -1,5 +1,8 @@
-const moment = require('moment');
+const { format } = require('date-fns');
 
 module.exports = () => {
-  return `[${moment().subtract(3, 'hours').format('DD/MM/YYYY HH:mm:ss')}]`;
+  return format(
+    new Date(), 
+    '[dd/mm/yyyy HH:mm:ss]',
+  );
 }
