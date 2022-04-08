@@ -13,7 +13,7 @@ module.exports = {
 		for (const file of commandFiles) {
 			const command = require(`./${file}`);
 			
-			const commandName = `/${command.data.name} ${command.data.options.map(option => ` [${option.name}]`)}`; // adiciona os parâmetros do comando
+			const commandName = `/${command.data.name}${command.data.options.map(option => ` [${option.name}]`)}`; // adiciona os parâmetros do comando
 
 			commands.push({ name: commandName, value: command.data.description });
 		}
