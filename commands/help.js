@@ -12,7 +12,10 @@ module.exports = {
 
 		for (const file of commandFiles) {
 			const command = require(`./${file}`);
-			commands.push({ name: `/${command.data.name}`, value: command.data.description });
+			
+			const commandName = `/${command.data.name} ${command.data.options.map(option => ` [${option.name}]`)}`; // adiciona os parâmetros do comando
+
+			commands.push({ name: commandName, value: command.data.description });
 		}
 
 		const helpMessage = new MessageEmbed()
@@ -24,7 +27,7 @@ module.exports = {
 			.setDescription('Bot para programação competitiva')
 			.addFields(commands)
 			.setTimestamp()
-			.setFooter({ text: 'BFS > DFS' });
+			.setFooter({ text: 'Special thanks to nathaliaop (liaoli)' });
 
 		return interaction.reply({ embeds: [helpMessage] });
 	},
