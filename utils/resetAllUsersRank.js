@@ -2,6 +2,7 @@ const sleep = require('./sleep');
 const updateRank = require('./updateRank');
 
 module.exports = async ( guild ) => {
+  return;
   guild.members.fetch()
     .then(async users => {
       for (const user of users) {
