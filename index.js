@@ -35,7 +35,7 @@ for (const file of commandFiles) {
 
 // reinicia o handle de todos os usuários a cada 1 hora
 // também verifica se há contests para adicionar aos eventos
-const resetAllUsers = new CronJob('0 * * * *', () => {
+const resetAllUsers = new CronJob('0 */1 * * *', () => {
   console.log(`${getCurrentTime()} Resetting all handles...`);
   
   const guild = client.guilds.cache.get(process.env.SERVER_ID);
