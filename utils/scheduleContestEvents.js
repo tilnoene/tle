@@ -11,21 +11,27 @@ module.exports = async ( guild ) => {
   const contests = [
     ...(contestsCodeforces.data.filter(contest => !contest.name.includes('Kotlin'))), // Codeforces: exceto contests "Kotlin Heroes"
     ...(contestsAtcoder.data.filter(contest => contest.name.includes('Beginner'))), // AtCoder: somente ABC
-  ];
+  ].map(contest => {
+    return {
+      ...contest,
+      name: contest.name.slice(0, 64), // limite de caracteres para o nome de um evento
+    }
+  });
+
+  let serverScheduledEvents = guild.scheduledEvents.cache;
 
   // adiciona os contests ao servidor
   contests.forEach(contest => {
-    let contestName = contest.name;
-    if (contest.name.length >= 60) { // validar para o tamanho não ser maior do que o permitido pela API do Discord
-      contestName = contest.name.substr(0, 61);
-    }
-
     // verifica se já existe um evento agendado com esse nome e foi criado pelo bot
-    const serverScheduledEvents = guild.scheduledEvents.cache;
+    if (!serverScheduledEvents.some(scheduledEvent => {
+      if (scheduledEvent.creator) {
+        return scheduledEvent.name === contest.name && scheduledEvent.creator.bot;
+      }
 
-    if (!serverScheduledEvents.some(scheduledEvent => scheduledEvent.name === contestName && scheduledEvent.creator.bot)) {
+      return scheduledEvent.name === contest.name;
+    })) {
       guild.scheduledEvents.create({
-        name: contestName,
+        name: contest.name,
         scheduledStartTime: contest.start_time,
         scheduledEndTime: contest.end_time,
         privacyLevel: 2,
@@ -37,10 +43,10 @@ module.exports = async ( guild ) => {
   });
 
   // deleta contests do servidor que não existem nos contests oficiais da API (evitar duplicadas, modificações)
-  const serverScheduledEvents = guild.scheduledEvents.cache;
+  serverScheduledEvents = guild.scheduledEvents.cache;
 
   serverScheduledEvents.forEach(scheduledEvent => {
-    if (!contests.some(contest => contest.name == scheduledEvent.name)) {
+    if (!contests.some(contest => contest.name === scheduledEvent.name)) {
       scheduledEvent.delete();
     }
   });
