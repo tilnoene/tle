@@ -48,7 +48,6 @@ resetAllUsers.start();
 
 client.once('ready', () => {
 	console.log(`${getCurrentTime()} Bot is ready!`);
-	scheduleContestEvents(client.guilds.cache.get(process.env.SERVER_ID));
 });
 
 client.on('interactionCreate', async interaction => {
