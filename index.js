@@ -48,6 +48,8 @@ resetAllUsers.start();
 
 client.once('ready', () => {
 	console.log(`${getCurrentTime()} Bot is ready!`);
+
+	client.user.setPresence({ activities: [{ name: '/help', type: 'STREAMING', url: 'https://www.twitch.tv/tiagobfs' }] /*, status: 'online'*/ });
 });
 
 client.on('interactionCreate', async interaction => {
