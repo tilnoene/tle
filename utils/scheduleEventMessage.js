@@ -1,4 +1,5 @@
 const { add } = require('date-fns');
+const logger = require('./logger');
 
 module.exports = async ( guild, message ) => {
   const lines = message.content.split('\n');
@@ -31,8 +32,8 @@ module.exports = async ( guild, message ) => {
         entityType: 'EXTERNAL',
         entityMetadata: { location },
       });
-    } catch(err) {
-      console.error(error);
+    } catch (err) {
+      logger.error(error);
     }
   }
 }

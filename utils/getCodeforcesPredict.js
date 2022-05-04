@@ -1,8 +1,8 @@
 const axios = require('axios');
 
 const config = require('../config.json');
+const logger = require('./logger');
 
-// não funciona
 module.exports = async ( handle ) => {
   let predict = {
     oldRating: 0,
@@ -12,10 +12,10 @@ module.exports = async ( handle ) => {
   
   await axios.get(`https://${config.api_predictor}/GetPartialRatingChangesServlet?contestId=${contest_id}&handles=${handle}`)
     .then(response => {
-      console.log(response.data);
+      logger.debug(response.data);
     })
-    .catch(error => {
-      // console.log(`[AtCoder] O usuário ${handle} não existe.`)
+    .catch(() => {
+      logger.debug(`[AtCoder] O usuário ${handle} não existe.`);
     });
 
   return predict;

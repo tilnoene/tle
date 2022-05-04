@@ -3,10 +3,17 @@ const axios = require('axios');
 const config = require('../config.json');
 
 module.exports = async ( guild ) => {
-  if (!guild) return;
+  if (!guild) {
+    throw new Error('Guild does not exist');
+  }
   
-  const contestsCodeforces = await axios.get(`http://${config.api_upcoming_contests}/codeforces`);
-  const contestsAtcoder = await axios.get(`http://${config.api_upcoming_contests}/at_coder`);
+  const contestsCodeforces = await axios.get(`http://${config.api_upcoming_contests}/codeforces`).catch(() => {
+    throw new Error('Codeforces upcoming contests API is down');
+  });
+
+  const contestsAtcoder = await axios.get(`http://${config.api_upcoming_contests}/at_coder`).catch(() => {
+    throw new Error('AtCoder upcoming contests API is down');
+  });
 
   const contests = [
     ...(contestsCodeforces.data.filter(contest => !contest.name.includes('Kotlin'))), // Codeforces: exceto contests "Kotlin Heroes"
@@ -36,7 +43,6 @@ module.exports = async ( guild ) => {
         scheduledEndTime: contest.end_time,
         privacyLevel: 2,
         entityType: 'EXTERNAL',
-        // description: 'Codeforces',
         entityMetadata: { location: contest.url },
       });
     }

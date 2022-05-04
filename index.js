@@ -2,17 +2,15 @@ const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const { CronJob } = require('cron');
 
+const logger = require('./utils/logger');
+
 const updateRank = require('./utils/updateRank');
 const resetAllUsersRank = require('./utils/resetAllUsersRank');
 const scheduleContestEvents = require('./utils/scheduleContestEvents');
 const scheduleEventMessage = require('./utils/scheduleEventMessage');
-const getCurrentTime = require('./utils/getCurrentTime');
-const sleep = require('./utils/sleep');
 
 require('./deploy-commands');
 require('dotenv').config();
-
-const keepAlive = require('./server');
 
 const client = new Client({ intents: [
 	Intents.FLAGS.GUILDS, 
@@ -24,30 +22,40 @@ const client = new Client({ intents: [
 	Intents.FLAGS.GUILD_SCHEDULED_EVENTS, 
 ] });
 
-// adiciona os comandos
-client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+// adiciona os comandos ao servidor
+const registerCommands = () => {
+	try {
+		client.commands = new Collection();
+		const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.data.name, command);
+		for (const file of commandFiles) {
+			const command = require(`./commands/${file}`);
+			client.commands.set(command.data.name, command);
+		}
+	} catch (error) {
+		logger.error('An error occurred while registering the commands');
+		logger.error(error);
+	}
 }
 
 // reinicia o handle de todos os usuários a cada 1 hora
-// também verifica se há contests para adicionar aos eventos
-const resetAllUsers = new CronJob('0 */1 * * *', () => {
-  console.log(`${getCurrentTime()} Resetting all handles...`);
+const everyOneHour = new CronJob('0 */1 * * *', async () => {
+	logger.info('Resetting all handles and schedule contest events...');
   
   const guild = client.guilds.cache.get(process.env.SERVER_ID);
 
-  resetAllUsersRank(guild);
-	scheduleContestEvents(guild);
+	try {
+		resetAllUsersRank(guild);
+		scheduleContestEvents(guild);
+	} catch (error) {
+		logger.error(error);
+	}
 });
 
-resetAllUsers.start();
+everyOneHour.start();
 
 client.once('ready', () => {
-	console.log(`${getCurrentTime()} Bot is ready!`);
+	logger.info('Bot is ready!');
 
 	client.user.setPresence({ activities: [{ name: '/help', type: 'STREAMING', url: 'https://www.twitch.tv/tiagobfs' }] /*, status: 'online'*/ });
 });
@@ -62,27 +70,27 @@ client.on('interactionCreate', async interaction => {
 	try {
 		await command.execute(interaction);
 	} catch (error) {
-		console.error(error);
+		logger.error('An error occurred while executing a command');
+		logger.error(error);
+
 		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
 });
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isSelectMenu()) return;
-
-	if (interaction.customId === 'select') {
-		await interaction.deferUpdate();
-		await sleep(4000);
-		await interaction.editReply({ content: 'Something was selected!', components: [] });
+client.on('guildMemberUpdate', (oldMember, newMember) => {
+	try {
+		updateRank(newMember.guild, newMember);
+	} catch (error) {
+		logger.error(error);
 	}
 });
 
-client.on('guildMemberUpdate', (oldMember, newMember) => {
-  updateRank(newMember.guild, newMember);
-});
-
 client.on('guildMemberAdd', member => {
-  updateRank(member.guild, member);
+	try {
+		updateRank(member.guild, member);
+	} catch (error) {
+		logger.error(error);
+	}
 });
 
 client.on('messageCreate', async message => {
@@ -93,13 +101,13 @@ client.on('messageCreate', async message => {
 			scheduleEventMessage(guild, message);
 			message.react('✅');
 		} catch (error) {
-			console.error(error);
+			logger.error('There was an error adding the contest manually');
+			logger.error(error);
 
 			message.react('❌');
 		}
 	}
 });
 
+registerCommands();
 client.login(process.env.DISCORD_TOKEN);
-
-keepAlive();

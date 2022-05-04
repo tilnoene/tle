@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const config = require('../config.json');
+const logger = require('./logger');
 
 module.exports = async ( handle ) => {
   let dataResult = {
@@ -16,7 +17,7 @@ module.exports = async ( handle ) => {
       dataResult.rank = result.rank || 'unrated-cf';
     })
     .catch(() => {
-      // console.log(`[Codeforces] User with handle ${handle} not found.`)
+      logger.debug(`[Codeforces] User with handle ${handle} not found.`)
     });
   
   return dataResult;

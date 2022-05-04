@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const config = require('../config.json');
 
 const getAtcoderRankName = require('./getAtcoderRankName');
+const logger = require('./logger');
 
 module.exports = async ( handle ) => {
   let rating = 0;
@@ -15,8 +16,8 @@ module.exports = async ( handle ) => {
         rating = parseInt($(element).text().slice(6));
       });
     })
-    .catch(error => {
-      // console.log(`[AtCoder] O usuário ${handle} não existe.`)
+    .catch(() => {
+      logger.debug('[AtCoder] O usuário ${handle} não existe.');
     });
 
   return {

@@ -1,4 +1,5 @@
 const express = require('express');
+const logger = require('./utils/logger');
 
 const server = express();
 
@@ -8,7 +9,7 @@ server.all('/', (req, res) => {
 
 function keepAlive() {
   server.listen(3000, () => {
-    console.log('Server is ready.');
+    logger.log('Server is ready');
   });
 }
 
