@@ -1,6 +1,6 @@
 {
   "name": "tle",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Discord Bot for competitive programming",
   "author": "tilnoene",
   "license": "MIT",
@@ -24,6 +24,9 @@
     "dotenv": "^16.0.0",
     "node": "^16.13.2",
     "nodemon": "^2.0.15"
+  },
+  "engines" : { 
+    "node" : ">=16.0.0"
   },
   "repository": {
     "type": "git",
