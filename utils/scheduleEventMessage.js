@@ -13,7 +13,8 @@ module.exports = async ( guild, message ) => {
 
       const startTime = lines[1].split(': ')[1].split(':');
       const scheduledStartTime = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], parseInt(startTime[0]), parseInt(startTime[1])); // YYYY-MM-DD HH:mm (month is 0-index based)
-      
+      scheduledStartTime.add(3); // adicionado no formato GMT-3
+
       const duration = lines[2].split(' ')[1].split(':');
       const scheduledEndTime = add(
         scheduledStartTime, {
