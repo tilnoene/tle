@@ -73,7 +73,12 @@ client.on('interactionCreate', async interaction => {
 		logger.error('An error occurred while executing a command');
 		logger.error(error);
 
-		await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    try {
+      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    } catch (error) {
+      logger.error('An error occurred while replying a message');
+      logger.error(error);
+    }
 	}
 });
 
@@ -99,6 +104,7 @@ client.on('messageCreate', async message => {
 			const guild = client.guilds.cache.get(process.env.SERVER_ID);
 
 			await scheduleEventMessage(guild, message);
+			
 			message.react('✅');
 		} catch (error) {
 			logger.error('There was an error adding the contest manually');
