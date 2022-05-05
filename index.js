@@ -23,7 +23,7 @@ const client = new Client({ intents: [
 ] });
 
 // adiciona os comandos ao servidor
-const registerCommands = () => {
+const registerCommands = async () => {
 	try {
 		client.commands = new Collection();
 		const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -45,8 +45,8 @@ const everyOneHour = new CronJob('0 */1 * * *', async () => {
   const guild = client.guilds.cache.get(process.env.SERVER_ID);
 
 	try {
-		resetAllUsersRank(guild);
-		scheduleContestEvents(guild);
+		await resetAllUsersRank(guild);
+		await scheduleContestEvents(guild);
 	} catch (error) {
 		logger.error(error);
 	}
@@ -77,17 +77,17 @@ client.on('interactionCreate', async interaction => {
 	}
 });
 
-client.on('guildMemberUpdate', (oldMember, newMember) => {
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
 	try {
-		updateRank(newMember.guild, newMember);
+		await updateRank(newMember.guild, newMember);
 	} catch (error) {
 		logger.error(error);
 	}
 });
 
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', async (member) => {
 	try {
-		updateRank(member.guild, member);
+		await updateRank(member.guild, member);
 	} catch (error) {
 		logger.error(error);
 	}
@@ -98,7 +98,7 @@ client.on('messageCreate', async message => {
 		try {
 			const guild = client.guilds.cache.get(process.env.SERVER_ID);
 
-			scheduleEventMessage(guild, message);
+			await scheduleEventMessage(guild, message);
 			message.react('✅');
 		} catch (error) {
 			logger.error('There was an error adding the contest manually');

@@ -6,6 +6,14 @@ const getAtcoderRank = require('./getAtcoderRank');
 const logger = require('./logger');
 
 module.exports = async ( guild, member ) => {
+  if (!guild) {
+    throw new Error('Guild does not exist');
+  }
+
+  if (!member) {
+    throw new Error('Member does not exist');
+  }
+
   const codeforces_ranks = config.codeforces_ranks;
   const atcoder_ranks = config.atcoder_ranks;
 

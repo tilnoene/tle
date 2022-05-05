@@ -2,6 +2,14 @@ const { add } = require('date-fns');
 const logger = require('./logger');
 
 module.exports = async ( guild, message ) => {
+  if (!guild) {
+    throw new Error('Guild does not exist');
+  }
+  
+  if (!message) {
+    throw new Error('Message does not exist');
+  }
+
   const lines = message.content.split('\n');
 
   if (lines.length >= 4) {

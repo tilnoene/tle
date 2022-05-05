@@ -2,6 +2,10 @@ const sleep = require('./sleep');
 const updateRank = require('./updateRank');
 
 module.exports = async ( guild ) => {
+  if (!guild) {
+    throw new Error('Guild does not exist');
+  }
+  
   guild.members.fetch()
     .then(async users => {
       for (const user of users) {
