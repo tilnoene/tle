@@ -53,7 +53,7 @@ module.exports = async ( guild ) => {
 
   serverScheduledEvents.forEach(scheduledEvent => {
     // não remove contests adicionados manualmente
-    if (!contests.some(contest => ((contest.name === scheduledEvent.name) || contest.description))) {
+    if (!contests.some(contest => ((contest.name === scheduledEvent.name) || !contest.description))) {
       scheduledEvent.delete();
     }
   });
