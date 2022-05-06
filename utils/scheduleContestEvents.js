@@ -52,7 +52,8 @@ module.exports = async ( guild ) => {
   serverScheduledEvents = guild.scheduledEvents.cache;
 
   serverScheduledEvents.forEach(scheduledEvent => {
-    if (!contests.some(contest => contest.name === scheduledEvent.name)) {
+    // não remove contests adicionados manualmente
+    if (!contests.some(contest => ((contest.name === scheduledEvent.name) || contest.description))) {
       scheduledEvent.delete();
     }
   });

@@ -56,7 +56,7 @@ everyOneHour.start();
 
 client.once('ready', () => {
 	logger.info('Bot is ready!');
-
+	
 	client.user.setPresence({ activities: [{ name: '/help', type: 'STREAMING', url: 'https://www.twitch.tv/tiagobfs' }] /*, status: 'online'*/ });
 });
 

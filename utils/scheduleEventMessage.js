@@ -42,6 +42,7 @@ module.exports = async ( guild, message ) => {
         privacyLevel: 2,
         entityType: 'EXTERNAL',
         entityMetadata: { location },
+        description: `Adicionado manualmente por ${message.author.username}`,
       });
     } catch (error) {
       throw new Error(error);
