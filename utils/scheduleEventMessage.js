@@ -1,5 +1,4 @@
 const { add } = require('date-fns');
-const logger = require('./logger');
 
 module.exports = async ( guild, message ) => {
   if (!guild) {
@@ -21,8 +20,12 @@ module.exports = async ( guild, message ) => {
       const dateParts = date.split('/');
 
       const startTime = lines[1].split(': ')[1].split(':');
-      const scheduledStartTime = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], parseInt(startTime[0]), parseInt(startTime[1])); // YYYY-MM-DD HH:mm (month is 0-index based)
-      scheduledStartTime.add(3); // adicionado no formato GMT-3
+      const scheduledStartTime = add(
+        new Date(dateParts[2], dateParts[1] - 1, dateParts[0], parseInt(startTime[0]), parseInt(startTime[1])),
+        {
+          hours: 3,
+        }
+      ); // YYYY-MM-DD HH:mm (month is 0-index based) e adicionado no formato GMT-3
 
       const duration = lines[2].split(' ')[1].split(':');
       const scheduledEndTime = add(
@@ -32,7 +35,7 @@ module.exports = async ( guild, message ) => {
         }
       );
 
-      guild.scheduledEvents.create({
+      await guild.scheduledEvents.create({
         name,
         scheduledStartTime: scheduledStartTime.toString(),
         scheduledEndTime: scheduledEndTime.toString(),
@@ -40,8 +43,8 @@ module.exports = async ( guild, message ) => {
         entityType: 'EXTERNAL',
         entityMetadata: { location },
       });
-    } catch (err) {
-      logger.error(error);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }
