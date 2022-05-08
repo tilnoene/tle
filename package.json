@@ -25,7 +25,8 @@
     "dotenv": "^16.0.0",
     "node": "^16.13.2",
     "nodemon": "^2.0.15",
-    "pino-pretty": "^7.6.1"
+    "pino-pretty": "^7.6.1",
+    "pretty": "^2.0.0"
   },
   "engines": {
     "node": ">=16.0.0"
